@@ -7,7 +7,7 @@ Emit deltas in change over a stream
 Create streams that emit deltas in changes. Then create reprensentations of deltas as other objects which are connected to the underlying streams.
 
 ``` js
-var DeltaStream = require("../index")
+var DeltaStream = require("delta-stream")
 
 var stream1 = DeltaStream()
     , stream2 = DeltaStream()
