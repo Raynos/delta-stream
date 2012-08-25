@@ -1,0 +1,32 @@
+{
+  "name": "delta-stream",
+  "version": "0.0.1",
+  "description": "Emit deltas in change over a stream",
+  "keywords": [],
+  "author": "Raynos <raynos2@gmail.com>",
+  "repository": "git://github.com/Raynos/delta-stream.git",
+  "main": "index",
+  "homepage": "https://github.com/Raynos/delta-stream",
+  "contributors": [
+    {
+      "name": "Jake Verbaten"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/Raynos/delta-stream/issues",
+    "email": "raynos2@gmail.com"
+  },
+  "dependencies": {
+    "ap": "~0.1.0",
+    "node-uuid": "~1.3.3",
+    "invert-stream": "0.0.0"
+  },
+  "devDependencies": {},
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/Raynos/delta-stream/raw/master/LICENSE"
+    }
+  ],
+  "scripts": {}
+}
