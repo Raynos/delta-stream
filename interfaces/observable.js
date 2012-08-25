@@ -32,7 +32,7 @@ function Observable(stream) {
         changes[key] = value
 
         observable.emit("change", changes, source)
-        observable.emit("change:" + key, value, source)
+        observable.emit("change:" + key, value)
     }
 
     function get(key) {
@@ -71,12 +71,10 @@ function bind(observable, stream) {
     stream.other.on("data", ondata)
 
     function ondata(data) {
-        var source = data[2]
-            , changes = data[0]
+        var changes = data[0]
+            , source = data[2]
 
-        if (source !== observable.id) {
-            Object.keys(changes).forEach(applyChanges)
-        }
+        Object.keys(changes).forEach(applyChanges)
 
         function applyChanges(key) {
             var value = changes[key]
@@ -86,7 +84,7 @@ function bind(observable, stream) {
 
     function onchange(changes, source) {
         var ts = Date.now()
-            , data = [changes, ts, source || observable.id]
+            , data = [changes, ts, source]
 
         stream.other.write(data)
     }

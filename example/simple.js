@@ -1,4 +1,5 @@
 var DeltaStream = require("../index")
+    , log = require("event-stream").log
 
 var stream1 = DeltaStream()
     , stream2 = DeltaStream()
@@ -6,8 +7,8 @@ var stream1 = DeltaStream()
 var observable1 = stream1.createObservable()
     , observable2 = stream2.createObservable()
 
-observable1.on("change", function (changes) {
-    console.log("[CHANGE]", changes)
+observable1.on("change:other", function (changes) {
+    console.log("[CHANGE:OTHER]", changes)
 })
 
 observable2.on("change:foo", function (value) {
