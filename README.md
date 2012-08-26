@@ -2,6 +2,16 @@
 
 Emit deltas in change over a stream
 
+## Data protocol
+
+`[ObjectOfChanges, timeStamp, sourceIdentifier]`
+
+A delta-stream emits an array, where the first value is an object of key / value pairs. This represents the delta in change on the object.
+
+The second value is a time stamp which can be used for clever synchronization. 
+
+The third value is a source identifier. It's used to identify who 
+
 ## Example
 
 Create streams that emit deltas in changes. Then create reprensentations of deltas as other objects which are connected to the underlying streams.
