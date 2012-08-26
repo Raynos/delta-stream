@@ -10,7 +10,7 @@ A delta-stream emits an array, where the first value is an object of key / value
 
 The second value is a time stamp which can be used for clever synchronization. 
 
-The third value is a source identifier. It's used to identify who 
+The third value is a source identifier. It's used to identify who created this delta
 
 ## Example
 
