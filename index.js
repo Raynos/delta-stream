@@ -4,9 +4,9 @@ var invert = require("invert-stream")
     , through = require("through")
     , partial = require("ap").partial
 
-var Observable = require("./interfaces/observable")
+var Delta = require("./interfaces/delta")
 
-DeltaStream.fromObservable = Observable.from
+DeltaStream.fromDelta = Delta.from
 
 module.exports = DeltaStream
 
@@ -18,7 +18,9 @@ function DeltaStream(id) {
 
     stream.id = id || uuid()
     stream.other = inverted.other
-    stream.createObservable = partial(Observable, stream)
+    stream.createDelta = returnDelta
+
+    var delta = Delta(stream)
 
     return stream
 
@@ -33,5 +35,9 @@ function DeltaStream(id) {
             data[2] = stream.id
         }
         this.emit("data", data)
+    }
+
+    function returnDelta() {
+        return delta
     }
 }

@@ -2,28 +2,29 @@ var DeltaStream = require("../index")
     , uuid = require("node-uuid")
     , EventEmitter = require("events").EventEmitter
 
-Observable.from = createStream
+Delta.from = createStream
 
-module.exports = Observable
+module.exports = Delta
 
-function Observable(stream) {
-    var observable = new EventEmitter()
+function Delta(stream) {
+    var delta = new EventEmitter()
         , state = {}
 
-    observable.set = set
-    observable.get = get
-    observable.toJSON = toJSON
-    observable.createStream = createStream
-    observable.sync = sync
+    delta.set = set
+    delta.get = get
+    delta.toJSON = toJSON
+    delta.createStream = returnStream
+    delta.sync = sync
 
     if (stream) {
-        observable.id = stream.id
-        bind(observable, stream)
+        delta.id = stream.id
+        bind(delta, stream)
     } else {
-        observable.id = uuid()
+        delta.id = uuid()
+        stream = createStream(delta)
     }
 
-    return observable
+    return delta
 
     function set(key, value, source) {
         var changes = {}
@@ -31,8 +32,8 @@ function Observable(stream) {
         state[key] = value
         changes[key] = value
 
-        observable.emit("change", changes, source)
-        observable.emit("change:" + key, value)
+        delta.emit("change", changes, source)
+        delta.emit("change:" + key, value)
     }
 
     function get(key) {
@@ -55,18 +56,21 @@ function Observable(stream) {
         }
     }
 
+    function returnStream() {
+        return stream
+    }
 }
 
-function createStream(observable) {
-    var stream = DeltaStream(observable.id)
+function createStream(delta) {
+    var stream = DeltaStream(delta.id)
 
-    bind(observable, stream)
+    bind(delta, stream)
 
     return stream
 }
 
-function bind(observable, stream) {
-    observable.on("change", onchange)
+function bind(delta, stream) {
+    delta.on("change", onchange)
 
     stream.other.on("data", ondata)
 
@@ -78,7 +82,7 @@ function bind(observable, stream) {
 
         function applyChanges(key) {
             var value = changes[key]
-            observable.set(key, value, source)
+            delta.set(key, value, source)
         }
     }
 
