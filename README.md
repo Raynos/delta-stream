@@ -36,6 +36,17 @@ observable2.set("other", "thing")
 
 ![Diagram][1]
 
+## Compatible modules
+
+ - [databind][2]
+ - [arrow-keys][3]
+ - [attribute][4]
+
+### Compatible minus one issue
+
+ - [crdt][5]
+ - [sorta][6]
+
 ## Installation
 
 `npm install delta-stream`
@@ -47,3 +58,8 @@ observable2.set("other", "thing")
 ## MIT Licenced
 
   [1]: https://lh6.googleusercontent.com/-OXMjXDcB6VM/UDltmdpD5pI/AAAAAAAAAIw/CEIrnD6k3v8/s408/12+-+1
+  [2]: https://github.com/Raynos/databind
+  [3]: https://github.com/Raynos/arrow-keys
+  [4]: https://github.com/Raynos/attribute
+  [5]: https://github.com/dominictarr/crdt/pull/2
+  [6]: https://github.com/substack/sorta/issues/1
