@@ -32,6 +32,10 @@ observable1.set("foo", "bar")
 observable2.set("other", "thing")
 ```
 
+## Diagram
+
+![Diagram][1]
+
 ## Installation
 
 `npm install delta-stream`
@@ -41,3 +45,5 @@ observable2.set("other", "thing")
  - Raynos
 
 ## MIT Licenced
+
+  [1]: https://lh6.googleusercontent.com/-OXMjXDcB6VM/UDltmdpD5pI/AAAAAAAAAIw/CEIrnD6k3v8/s408/12+-+1
