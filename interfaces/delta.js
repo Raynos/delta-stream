@@ -2,7 +2,7 @@ var DeltaStream = require("../index")
     , uuid = require("node-uuid")
     , EventEmitter = require("events").EventEmitter
 
-Delta.from = createStream
+Delta.createStream = createStream
 
 module.exports = Delta
 

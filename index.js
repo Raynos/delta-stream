@@ -1,7 +1,7 @@
 var Source = require("source-stream")
     , Delta = require("./interfaces/delta")
 
-DeltaStream.fromDelta = Delta.from
+DeltaStream.fromDelta = Delta.createStream
 DeltaStream.Delta = Delta
 
 module.exports = DeltaStream
