@@ -6,12 +6,21 @@ Delta.createStream = createStream
 
 module.exports = Delta
 
+/*
+    This should be a Map
+
+    Events:
+      - change <changes, source>
+      - change:<KEY> <value>
+*/
 function Delta(stream) {
     var delta = new EventEmitter()
         , state = {}
 
     delta.set = set
     delta.get = get
+    delta.has = has
+    delta.delete = _delete
     delta.toJSON = toJSON
     delta.createStream = returnStream
     delta.sync = sync
@@ -29,7 +38,12 @@ function Delta(stream) {
     function set(key, value, source) {
         var changes = {}
 
-        state[key] = value
+        if (value === undefined) {
+            delete state[key]
+        } else {
+            state[key] = value
+        }
+        
         changes[key] = value
 
         delta.emit("change", changes, source)
@@ -37,11 +51,15 @@ function Delta(stream) {
     }
 
     function get(key) {
-        if (key) {
-            return state[key]
-        }
+        return state[key]
+    }
 
-        return state
+    function has(key) {
+        return key in state
+    }
+
+    function _delete(key) {
+        set(key, undefined)
     }
 
     function toJSON() {
