@@ -8,13 +8,17 @@ module.exports = DeltaStream
 
 function DeltaStream(id) {
     var stream = Source()
-        , delta = Delta(stream)
+        , delta
 
     stream.createDelta = returnDelta
 
     return stream
 
     function returnDelta() {
+        if (!delta) {
+            delta = Delta(stream)
+        }
+
         return delta
     }
 }
