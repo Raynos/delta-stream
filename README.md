@@ -45,14 +45,14 @@ delta2.set("other", "thing")
 
 ## Compatible modules
 
- - [databind][2]
+ - [text-node][2]
  - [arrow-keys][3]
  - [attribute][4]
+ - [form-stream][6]
 
 ### Compatible minus one issue
 
  - [crdt][5]
- - [sorta][6]
 
 ## Installation
 
@@ -65,8 +65,8 @@ delta2.set("other", "thing")
 ## MIT Licenced
 
   [1]: https://lh6.googleusercontent.com/-OXMjXDcB6VM/UDltmdpD5pI/AAAAAAAAAIw/CEIrnD6k3v8/s408/12+-+1
-  [2]: https://github.com/Raynos/databind
+  [2]: https://github.com/Raynos/text-node
   [3]: https://github.com/Raynos/arrow-keys
   [4]: https://github.com/Raynos/attribute
   [5]: https://github.com/dominictarr/crdt/pull/2
-  [6]: https://github.com/substack/sorta/issues/1
+  [6]: https://github.com/Raynos/form-stream

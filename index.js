@@ -11,6 +11,7 @@ function DeltaStream(id) {
         , delta
 
     stream.createDelta = returnDelta
+    stream.sync = sync
 
     return stream
 
@@ -20,5 +21,12 @@ function DeltaStream(id) {
         }
 
         return delta
+    }
+
+    function sync(other) {
+        var selfDelta = returnDelta()
+            , otherDelta = other.createDelta()
+
+        selfDelta.sync(otherDelta)
     }
 }
