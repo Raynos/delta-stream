@@ -4,55 +4,47 @@ Emit deltas in change over a stream
 
 ## Data protocol
 
-`[ObjectOfChanges, timeStamp, sourceIdentifier]`
+`[key, value, sourceIdentifier, timestamp]`
 
-A delta-stream emits an array, where the first value is an object of key / value pairs. This represents the delta in change on the object.
-
-The second value is a time stamp which can be used for clever synchronization. 
+A delta-stream emits an array, where the first value is the key that has changed and the second value is the new value. This represents the delta in change on the object.
 
 The third value is a source identifier. It's used to identify who created this delta
 
+The fourth value is a time stamp which can be used for clever synchronization. 
+
 ## Example
 
-Create streams that emit deltas in changes. Then create reprensentations of deltas as other objects which are connected to the underlying streams.
+Create deltas that handle changes in state. Then create stream reprensentations of deltas
 
 ``` js
-var DeltaStream = require("delta-stream")
+var Delta = require("delta-stream")
 
-var stream1 = DeltaStream()
-    , stream2 = DeltaStream()
+var delta1 = Delta()
+    , delta2 = Delta()
 
-var delta1 = stream1.createDelta()
-    , delta2 = stream2.createDelta()
+var stream1 = delta1.createStream()
+    , stream2 = delta2.createStream()
 
-delta1.on("change:other", function (changes) {
-    console.log("[CHANGE:OTHER]", changes)
+delta1.on("change:delta1", function (value) {
+    console.log("[CHANGE:DELTA1]", value)
 })
 
-delta2.on("change:foo", function (value) {
-    console.log("[CHANGE:FOO]", value)
+delta2.on("change:delta2", function (value) {
+    console.log("[CHANGE:DELTA2]", value)
 })
 
-stream2.pipe(stream1).pipe(stream2)
+stream1.pipe(stream2).pipe(stream1)
 
-delta1.set("foo", "bar")
-delta2.set("other", "thing")
+delta1.set("delta2", "hello")
+delta2.set("delta1", "world")
 ```
 
-## Diagram
-
-![Diagram][1]
-
-## Compatible modules
+## Almost Compatible modules [NEED TO BE REFACTORED]
 
  - [text-node][2]
  - [arrow-keys][3]
  - [attribute][4]
  - [form-stream][6]
-
-### Compatible minus one issue
-
- - [crdt][5]
 
 ## Installation
 
@@ -68,5 +60,4 @@ delta2.set("other", "thing")
   [2]: https://github.com/Raynos/text-node
   [3]: https://github.com/Raynos/arrow-keys
   [4]: https://github.com/Raynos/attribute
-  [5]: https://github.com/dominictarr/crdt/pull/2
   [6]: https://github.com/Raynos/form-stream
