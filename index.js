@@ -1,6 +1,8 @@
 var Scuttlebutt = require("scuttlebutt")
     , updateIsRecent = Scuttlebutt.updateIsRecent
-    , reduce = require("iterators").reduceSync
+    , iterators = require("iterators")
+    , reduce = iterators.reduceSync
+    , forEach = iterators.forEachSync
 
 module.exports = Delta
 
@@ -58,7 +60,15 @@ function Delta(id) {
             throw Error("id cannot be changed")
         }
 
-        scutt.localUpdate(key, value)
+        if (typeof key === "string") {
+            scutt.localUpdate(key, value)
+        } else {
+            forEach(key, setKeyValue)
+        }
+    }
+
+    function setKeyValue(value, key) {
+        set(key, value)
     }
 
     function get(key) {
@@ -70,7 +80,7 @@ function Delta(id) {
     }
 
     function $delete(key) {
-        localUpdate(key, undefined)
+        set(key, undefined)
     }
 
     function toJSON() {
