@@ -7,16 +7,15 @@ module.exports = Delta
 /*
     Protocol is [key, value, source, timestamp]
 */
-function Delta() {
-    var scutt = Scuttlebutt()
-        , localUpdate = scutt.localUpdate.bind(scutt)
+function Delta(id) {
+    var scutt = Scuttlebutt(id)
         , updates = {}
-        , state = {}
+        , state = { id: scutt.id }
 
     scutt.applyUpdate = applyUpdate
     // history is a global variable -.-
     scutt.history = $history
-    scutt.set = localUpdate
+    scutt.set = set
     scutt.get = get
     scutt.has = has
     // stupid tokens
@@ -52,6 +51,14 @@ function Delta() {
 
     function $history(sources) {
         return reduce(updates, isRecent, sources, []).sort(byTimestamp)
+    }
+
+    function set(key, value) {
+        if (key === "id" && value !== scutt.id) {
+            throw Error("id cannot be changed")
+        }
+
+        scutt.localUpdate(key, value)
     }
 
     function get(key) {
