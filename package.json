@@ -17,7 +17,7 @@
     "email": "raynos2@gmail.com"
   },
   "dependencies": {
-    "scuttlebutt": "git://github.com/Raynos/scuttlebutt",
+    "scuttlebutt": "~2.2.0",
     "iterators": "~0.3.0"
   },
   "devDependencies": {

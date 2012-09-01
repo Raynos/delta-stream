@@ -8,22 +8,22 @@ module.exports = Delta
     Protocol is [key, value, source, timestamp]
 */
 function Delta() {
-    var stream = Scuttlebutt()
-        , localUpdate = stream.localUpdate.bind(stream)
+    var scutt = Scuttlebutt()
+        , localUpdate = scutt.localUpdate.bind(scutt)
         , updates = {}
         , state = {}
 
-    stream.applyUpdate = applyUpdate
+    scutt.applyUpdate = applyUpdate
     // history is a global variable -.-
-    stream.history = $history
-    stream.set = localUpdate
-    stream.get = get
-    stream.has = has
+    scutt.history = $history
+    scutt.set = localUpdate
+    scutt.get = get
+    scutt.has = has
     // stupid tokens
-    stream.delete = $delete
-    stream.toJSON = toJSON
+    scutt.delete = $delete
+    scutt.toJSON = toJSON
 
-    return stream
+    return scutt
 
     function applyUpdate(update) {
         var key = update[0]
@@ -32,7 +32,7 @@ function Delta() {
 
         // If the most recent update for that key is newer then the incoming
         // update. Then ignore it
-        if (recentUpdate && recentUpdate[3] > update[3]) {
+        if (recentUpdate && recentUpdate[2] > update[2]) {
             return
         }
 
@@ -44,8 +44,8 @@ function Delta() {
             state[key] = value
         }
 
-        stream.emit("change", key, value)
-        stream.emit("change:" + key, value)
+        scutt.emit("change", key, value)
+        scutt.emit("change:" + key, value)
 
         return true
     }
@@ -82,5 +82,5 @@ function isRecent(acc, update) {
 }
 
 function byTimestamp(a, b) {
-    return a[3] - b[3]
+    return a[2] - b[2]
 }
