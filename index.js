@@ -1,5 +1,6 @@
 var Scuttlebutt = require("scuttlebutt")
     , updateIsRecent = Scuttlebutt.updateIsRecent
+    , EventEmitter = require("events").EventEmitter
     , iterators = require("iterators")
     , reduce = iterators.reduceSync
     , forEach = iterators.forEachSync
@@ -9,22 +10,27 @@ module.exports = Delta
 /*
     Protocol is [key, value, source, timestamp]
 */
-function Delta(id) {
+function Delta(id, silent) {
     var scutt = Scuttlebutt(id)
+        , delta = new EventEmitter()
         , updates = {}
-        , state = { id: scutt.id }
+        , state = { id: (id = scutt.id) }
+        , log = silent ? noop : error
 
     scutt.applyUpdate = applyUpdate
     // history is a global variable -.-
     scutt.history = $history
-    scutt.set = set
-    scutt.get = get
-    scutt.has = has
-    // stupid tokens
-    scutt.delete = $delete
-    scutt.toJSON = toJSON
 
-    return scutt
+    delta.validate = validate
+    delta.set = set
+    delta.get = get
+    delta.has = has
+    // stupid tokens
+    delta.delete = $delete
+    delta.toJSON = toJSON
+    delta.createStream = scutt.createStream.bind(scutt)
+
+    return delta
 
     function applyUpdate(update) {
         var key = update[0]
@@ -45,8 +51,8 @@ function Delta(id) {
             state[key] = value
         }
 
-        scutt.emit("change", key, value)
-        scutt.emit("change:" + key, value)
+        delta.emit("change", key, value)
+        delta.emit("change:" + key, value)
 
         return true
     }
@@ -55,8 +61,18 @@ function Delta(id) {
         return reduce(updates, isRecent, sources, []).sort(byTimestamp)
     }
 
+    function validate(changes) {
+        try {
+            delta.emit("validate", changes)
+            return true
+        } catch (e) {
+            log("[DELTA-STREAM]: validation", e.message, e)
+            return false
+        }
+    }
+
     function set(key, value) {
-        if (key === "id" && value !== scutt.id) {
+        if (key === "id" && value !== id) {
             throw Error("id cannot be changed")
         }
 
@@ -100,4 +116,10 @@ function isRecent(acc, update) {
 
 function byTimestamp(a, b) {
     return a[2] - b[2]
+}
+
+function noop() {}
+
+function error() {
+    console.error.apply(console, arguments)
 }
