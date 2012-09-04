@@ -48,7 +48,64 @@ delta2.set("delta1", "world")
 
 ## Docs
  
+### `delta.set`
 
+`delta.set` sets a key value pair on a delta
+
+```
+var delta = Delta()
+
+delta.set("foo", "bar")
+
+assert.equal(delta.get("foo"), "bar")
+```
+
+If you set a value to undefined it will be deleted from the internal state 
+object.
+
+### `delta.get`
+
+`delta.get` get's a value by it's key
+
+```
+var delta = Delta()
+
+delta.set("foo", "bar")
+
+assert.equal(delta.get("foo"), "bar")
+```
+
+### `delta.has`
+
+`delta.has` returns true or false based on whether the the key is set
+
+```
+var delta = Delta()
+
+assert.equal(delta.has("foo"), false)
+```
+
+### `delta.delete`
+
+`delta.delete` deletes the value attached to a key. Internally this is the 
+same as setting a value to `undefined`.
+
+```
+var delta = Delta()
+
+delta.set("foo", "bar")
+delta.delete("foo")
+
+assert.equal(delta.has("foo"), false)
+```
+
+### `delta.toJSON`
+
+Returns the entire internal state as an object
+
+### `delta.createStream`
+
+Create a scuttlebutt stream of the delta. See [scuttlebutt][7]
 
 ## Installation
 
@@ -65,3 +122,4 @@ delta2.set("delta1", "world")
   [3]: https://github.com/Raynos/arrow-keys
   [4]: https://github.com/Raynos/attribute
   [6]: https://github.com/Raynos/form-stream
+  [7]: https://github.com/dominictarr/scuttlebutt
