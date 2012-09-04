@@ -14,8 +14,10 @@ function Delta(id, silent) {
     var scutt = Scuttlebutt(id)
         , delta = new EventEmitter()
         , updates = {}
-        , state = { id: (id = scutt.id) }
+        , state = { id: scutt.id }
         , log = silent ? noop : error
+
+    id = delta.id = scutt.id
 
     scutt.applyUpdate = applyUpdate
     // history is a global variable -.-
@@ -73,6 +75,7 @@ function Delta(id, silent) {
 
     function set(key, value) {
         if (key === "id" && value !== id) {
+            console.log("invalid", key, value)
             throw Error("id cannot be changed")
         }
 
